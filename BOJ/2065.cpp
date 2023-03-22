@@ -5,8 +5,8 @@ using namespace std;
 
 int main(){
   int m,t,n;
-  queue<int> q1;
-  queue<int> q2;
+  queue<pair<int,int>> q1;
+  queue<pair<int,int>> q2;
 
   int ans[10001];
   
@@ -17,10 +17,10 @@ int main(){
     string str;
     cin >> tt >>str;
     if(str =="left"){
-      q1.push(tt);
+      q1.push({tt,i});
     }
     else{
-      q2.push(tt);
+      q2.push({tt,i});
     }
   }
 
@@ -29,26 +29,28 @@ int main(){
   while(!q1.empty() || !q2.empty()){
     int p = 0;
     int flag = 0;
-    if(!q1.empty() && q1.front() <= time){
+    if(!q1.empty() && q1.front().first <= time){
       flag = 1;
       boat == 0 ? time += 0 : time += t;
       boat = 0;
-      while(!q1.empty() && q1.front() <= time && p < m){
+      while(!q1.empty() && q1.front().first <= time && p < m){
         p++;
-        cout << time + t <<"\n";
+        //cout << time + t <<"\n";
+        ans[q1.front().second] = time + t;
         q1.pop();
       }
       time += t;
       boat = 1;
     }
     p = 0;
-    if(!q2.empty() && q2.front() <= time){
+    if(!q2.empty() && q2.front().first <= time){
       flag = 1;
       boat == 1 ? time += 0 : time += t;
       boat = 1;
-      while(!q2.empty() && q2.front() <= time && p < m){
+      while(!q2.empty() && q2.front().first <= time && p < m){
         p++;
-        cout << time + t <<"\n";
+        //cout << time + t <<"\n";
+        ans[q2.front().second] = time + t;
         q2.pop();
       }
       time += t;
@@ -57,6 +59,10 @@ int main(){
 
     if(flag == 0) time++;
 
+  }
+
+  for(int i =0; i< n;i++){
+    cout <<ans[i]<<"\n";
   }
 
   return 0;
