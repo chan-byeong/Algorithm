@@ -3,44 +3,38 @@
 
 using namespace std;
 
-int main(){
-  int n ,  minb = 0;
-  cin >> n;
-  vector<int> a(n+2);
+int a[5001];
+int n ;
 
-  for(int i =1 ; i<=n;i++){
+int f(int a[] , int n){
+  int mn = 1000000005,ans;
+  for(int i=0; i <n; i++){
+    mn = min(mn,a[i]);
+  }
+  for(int i=0; i < n; i++){
+    a[i] -= mn;
+  }
+  ans = mn;
+  int p = 0,q;
+  while(p < n){
+    while(p<n && a[p] == 0) p++;
+    if(p == n) break;
+    q=p;
+    while(q+1 < n && a[q+1] > 0) q++;
+    ans += f(a+p , q-p+1);
+  }
+
+  return min(ans, n);
+}
+
+int main(){
+  int minb = 0;
+  cin >> n;
+  for(int i = 0; i< n;i++){
     cin >> a[i];
   }
 
-while(true)
-{
-  int cnt = 0;
-  for(int i = 1; i <= n+1; i++){
-    if(a[i] > 0) cnt++;
-    else{
-      if(cnt == 1){
-        a[i-1] = 0;
-        minb++;
-      }
-      else if(cnt > 1){
-        for(int j = 1; j <= cnt; j++){
-          a[i-j] -= 1;
-        }
-        minb++;
-      }
-      cnt = 0;
-    }
-  }
-
-  int sum = 0;
-  for(int e : a) {
-    sum += e;
-  }
-
-  if(sum == 0) break; 
-}
-
-  cout << minb <<"\n";
+  cout << f(a,n) <<"\n";
 
   return 0;
 }
