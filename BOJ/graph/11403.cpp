@@ -8,18 +8,29 @@ int n;
 int graph[101][101];
 int vis[101];
 
-int dfs(int i, int j){
-  int res = 0;
-  vis[i] = 1;
-  for(int p = 0; p < n; p++){
-    if(graph[i][p] == 0) continue;
-    if(p == j){res = 1; break;}
-    if(vis[p] == 1) continue;
-    res = dfs(p,j);
-    if(res == 1) break;
+int dfs(int nd, int tg){
+  fill(vis,vis+n+1,0);
+  stack<int> st;
+  st.push(nd);
+
+  while (!st.empty())
+  {
+    int cur = st.top();
+    st.pop();
+    
+    if(vis[cur]) continue;
+    if(cur != nd) vis[cur] = 1;
+
+    for(int nxt = 0; nxt < n; nxt++){
+      if(vis[nxt]) continue;
+      if(graph[cur][nxt]){
+        if(nxt == tg) return 1;
+        st.push(nxt);
+      }
+    }
+
   }
-  vis[i] = 0;
-  return res;
+  return 0;
 }
 
 
