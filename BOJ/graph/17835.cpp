@@ -1,6 +1,6 @@
 //https://www.acmicpc.net/problem/17835
 //다익스트라
-//시간초과 -> 수정 : 면접장에서 모든 노드로 다익스트라 수행
+//시간초과 -> 수정 : pq에 면접장 노드 넣고, 다익스트라 1회 수행
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -11,29 +11,22 @@ int n, m ,k;
 
 vector<pair<int,int>> adj[100005];
 int d[100005];
-vector<int> pnt;
 
 priority_queue<pair<int,int>> pq;
 
-void dijk(int nd) //시작 노드
+void dijk() //시작 노드
 {
-  d[nd] = 0;
-  pq.push({d[nd],nd});
-
   while(!pq.empty()){
     auto cur = pq.top(); pq.pop();
-    if(d[cur.second] != cur.first ) continue;
-
+    if(d[cur.second] != cur.first ) {
+      cout << cur.first <<"\n";
+      continue; 
+    }
     for(auto nxt : adj[cur.second]){
-      if(d[nxt.second] <= d[cur.second]+nxt.first) continue;
+      if(d[nxt.second] <= d[cur.second] + nxt.first) continue;
       d[nxt.second] = d[cur.second] + nxt.first;
       pq.push({d[nxt.second],nxt.second});
     }
-  }
-
-  int pp = INF;
-  for(int p : pnt){
-    pp = min(d[p],pp);
   }
 }
 
@@ -52,19 +45,15 @@ int main(){
   while(k--){
     int tmp;
     cin >> tmp;
-    pnt.push_back(tmp);
+    d[tmp] = 0;
+    pq.push({d[tmp],tmp});
   }
 
-  for(int i = 1; i <= n; i++){
-    if(find(pnt.begin() , pnt.end() , i) != pnt.end()) {
-      dijk(i);      
-    }
-  }
+  dijk();
 
   pair<int,int> ans = {0,0};
 
   for(int i = 1; i <= n; i++){
-    if(find(pnt.begin() , pnt.end() , i) != pnt.end()) continue;
     if(ans.first < d[i]){
       ans = {d[i],i};
     }
