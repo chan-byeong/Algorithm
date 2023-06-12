@@ -7,14 +7,14 @@ using namespace std;
 
 typedef long long ll;
 
-#define INF 0x3f3f3f3f
+#define INF 0x7f7f7f7f7f7f
 
 ll n, m ,k;
 
 vector<pair<ll,ll>> adj[100005];
 ll d[100005];
 
-priority_queue<pair<ll,ll>> pq;
+priority_queue<pair<ll,ll>,vector<pair<ll,ll>> , greater<pair<ll,ll>>> pq;
 
 void dijk() //시작 노드
 {
