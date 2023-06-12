@@ -5,23 +5,23 @@
 
 using namespace std;
 
+typedef long long ll;
+
 #define INF 0x3f3f3f3f
 
-int n, m ,k;
+ll n, m ,k;
 
-vector<pair<int,int>> adj[100005];
-int d[100005];
+vector<pair<ll,ll>> adj[100005];
+ll d[100005];
 
-priority_queue<pair<int,int>> pq;
+priority_queue<pair<ll,ll>> pq;
 
 void dijk() //시작 노드
 {
   while(!pq.empty()){
     auto cur = pq.top(); pq.pop();
-    if(d[cur.second] != cur.first ) {
-      cout << cur.first <<"\n";
-      continue; 
-    }
+    if(d[cur.second] != cur.first ) continue; 
+    
     for(auto nxt : adj[cur.second]){
       if(d[nxt.second] <= d[cur.second] + nxt.first) continue;
       d[nxt.second] = d[cur.second] + nxt.first;
@@ -37,8 +37,9 @@ int main(){
   cin >> n >> m >> k;
 
   fill(d,d+n+1,INF);
+
   while(m--){
-    int a,b,w;
+    ll a,b,w;
     cin >> a >> b >> w;
     adj[b].push_back({w,a});
   }
@@ -51,15 +52,17 @@ int main(){
 
   dijk();
 
-  pair<int,int> ans = {0,0};
+  ll answ = 0;
+  int ansn = 0;
 
   for(int i = 1; i <= n; i++){
-    if(ans.first < d[i]){
-      ans = {d[i],i};
+    if(answ < d[i]){
+      answ = d[i];
+      ansn = i;
     }
   }
 
-  cout << ans.second << "\n" << ans.first <<"\n";
+  cout << ansn << "\n" << answ <<"\n";
 
   return 0;
 }
